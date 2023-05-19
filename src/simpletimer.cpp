@@ -123,7 +123,8 @@ void SimpleTimer::startStopTimer() {
         stopStuff();
     } else {
         const QString inputString = theLineEdit->text().replace(',', '.'); // holds the user input
-        const QStringList captures = QRegularExpression("^(\\d{1,2}):(\\d{1,2})$").match(inputString).capturedTexts();
+        static const QRegularExpression regex = QRegularExpression("^(\\d{1,2}):(\\d{1,2})$");
+        const QStringList captures = regex.match(inputString).capturedTexts();
         int newInterval;
 
         // Check if user input is a time of day or period of time
