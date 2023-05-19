@@ -10,7 +10,7 @@ jobs:
         run: choco install -y --no-progress qt5-default
       - name: Build program
         run: |
-        $xmlResult = Select-Xml -Path $env:APPDATA\QtProject\qtcreator\qtversion.xml -XPath "/qtcreator/data/valuemap/value[@key='QMakePath']"
-        $Qtmake = $xmlResult.Node.InnerText
-        & $Qtmake src\LittleTimer.pro
-        make
+          $xmlResult = Select-Xml -Path $env:APPDATA\QtProject\qtcreator\qtversion.xml -XPath "/qtcreator/data/valuemap/value[@key='QMakePath']"
+          $Qtmake = $xmlResult.Node.InnerText
+          & $Qtmake src\LittleTimer.pro
+          make
