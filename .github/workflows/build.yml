@@ -1,5 +1,7 @@
 name: build-qt-program
 
+on: push
+
 jobs:
   build-qt-program:
     runs-on: windows-latest
