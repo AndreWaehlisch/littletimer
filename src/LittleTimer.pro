@@ -19,4 +19,4 @@ HEADERS     += mainwindow.h \
 
 FORMS       += mainwindow.ui
 RESOURCES   += ../resource/images.qrc
-CONFIG      += c++11
+CONFIG      += c++17

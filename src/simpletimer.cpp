@@ -117,14 +117,48 @@ void SimpleTimer::timerFired() const {
     msg.exec();
 }
 
+unsigned long SimpleTimer::getConversionFactor(const int currentIndex) {
+    unsigned long factor = 0; // factor to convert input value to ms
+
+    // Check which conversion factor user has selected
+    switch(static_cast<conversion_factor>(currentIndex)) {
+	case conversion_factor::ms:
+	    factor = 1;
+	    break;
+
+	case conversion_factor::sec:
+	    factor = 1000;
+	    break;
+
+	case conversion_factor::min:
+	    factor = 1000 * 60;
+	    break;
+
+	case conversion_factor::h:
+	    factor = 1000 * 60 * 60;
+	    break;
+    }
+
+    return std::as_const(factor);
+}
+
 void SimpleTimer::startStopTimer() {
+    const QString inputString = theLineEdit->text().replace(',', '.'); // holds the user input
+    static const QRegularExpression regex = QRegularExpression("^(\\d{1,2}):(\\d{1,2})$");
+    const QStringList captures = regex.match(inputString).capturedTexts();
+
     // If running: Stop timer. Else: Start timer.
     if(running) {
+        // Check if user input is a time of day or period of time
+        if(captures.length() != 3) {
+    	    // set text of LineEdit to current Timer value
+    	    const int remainingTime = myTimer.remainingTime();
+            const unsigned long factor = getConversionFactor(theComboBox->currentIndex()); // factor to convert input value to ms
+	    theLineEdit->setText(QString::number(static_cast<double>(remainingTime) / factor));
+	}
+
         stopStuff();
     } else {
-        const QString inputString = theLineEdit->text().replace(',', '.'); // holds the user input
-        static const QRegularExpression regex = QRegularExpression("^(\\d{1,2}):(\\d{1,2})$");
-        const QStringList captures = regex.match(inputString).capturedTexts();
         int newInterval;
 
         // Check if user input is a time of day or period of time
@@ -143,26 +177,7 @@ void SimpleTimer::startStopTimer() {
                 newInterval += 24 * 60 * 60 * 1000;
             }
         } else {
-            unsigned long factor = 0; // factor to convert input value to ms
-
-            // Check which conversion factor user has selected
-            switch(static_cast<conversion_factor>(theComboBox->currentIndex())) {
-                case conversion_factor::ms:
-                    factor = 1;
-                    break;
-
-                case conversion_factor::sec:
-                    factor = 1000;
-                    break;
-
-                case conversion_factor::min:
-                    factor = 1000 * 60;
-                    break;
-
-                case conversion_factor::h:
-                    factor = 1000 * 60 * 60;
-                    break;
-            }
+            const unsigned long factor = getConversionFactor(theComboBox->currentIndex()); // factor to convert input value to ms
 
             // Convert user input
             bool conversionOkay;

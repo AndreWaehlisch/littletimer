@@ -32,6 +32,7 @@ class SimpleTimer : public QObject {
         QWinTaskbarProgress *wintaskprogress;
 #endif /* LITTLETIMER_DO_WIN_TASKBAR_PROGRESSBAR */
         void startStuff(); // does stuff when timer is started (e.g. disable button)
+        unsigned long getConversionFactor(const int currentIndex);
 
     public:
         bool running; // if the timer is currently running
