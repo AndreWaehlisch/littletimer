@@ -139,7 +139,7 @@ unsigned long SimpleTimer::getConversionFactor(const int currentIndex) {
 	    break;
     }
 
-    return std::as_const(factor);
+    return factor;
 }
 
 void SimpleTimer::startStopTimer() {
