@@ -3,6 +3,11 @@ equals(QT_MAJOR_VERSION, 5) : lessThan(QT_MINOR_VERSION, 7) : error("need at lea
 
 QT          += core gui widgets
 
+win32:qtHaveModule(gui-private) {
+QT          += gui-private
+DEFINES     += LITTLETIMER_DO_WIN_BRINGTOFRONT
+}
+
 qtHaveModule(winextras) {
 QT          += winextras
 DEFINES     += LITTLETIMER_DO_WIN_TASKBAR_PROGRESSBAR
