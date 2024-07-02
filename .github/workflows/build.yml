@@ -11,15 +11,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: jurplel/install-qt-action@v4
       - uses: ilammy/msvc-dev-cmd@v1.13.0
-      - name: bulid and release
+      - name: build and release
         run: |
-	  mkdir build
-	  cd build
-	  qmake ../src/LittleTimer.pro
-	  nmake
-	  windeployqt --release --no-translations release/LittleTimer.exe
-	  tar -a -c -f release.zip release
-	  python3 -c "from datetime import datetime; print(datetime.today().isoformat().replace(':', '_'))" >> date.txt
-	  gh release create "$(cat date.txt)" release.zip
-	env:
-	  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          mkdir build
+          cd build
+          qmake ../src/LittleTimer.pro
+          nmake
+          windeployqt --release --no-translations release/LittleTimer.exe
+          tar -a -c -f release.zip release
+          python3 -c "from datetime import datetime; print(datetime.today().isoformat().replace(':', '_'))" >> date.txt
+          gh release create "$(cat date.txt)" release.zip
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
