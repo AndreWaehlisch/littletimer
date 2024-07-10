@@ -82,13 +82,13 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>48</width>
+           <width>50</width>
            <height>20</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>48</width>
+           <width>50</width>
            <height>20</height>
           </size>
          </property>
@@ -133,13 +133,13 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>100</width>
+           <width>98</width>
            <height>20</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>100</width>
+           <width>98</width>
            <height>20</height>
           </size>
          </property>
