@@ -15,9 +15,9 @@ jobs:
         run: |
           mkdir build
           cd build
-          qmake ../src/LittleTimer.pro
+          qmake ../src/littleTimer.pro
           nmake
-          windeployqt --release --no-translations release/LittleTimer.exe
+          windeployqt --release --no-translations release/littleTimer.exe
           tar -a -c -f release.zip release
           python3 -c "from datetime import datetime; print(datetime.today().isoformat().replace(':', '_'))" >> date.txt
           gh release create "$(cat date.txt)" release.zip
