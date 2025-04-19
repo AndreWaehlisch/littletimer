@@ -1,8 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QMainWindow>
+#include <QWidget>
+#include <QIcon>
+#include <QString>
 #include <QSystemTrayIcon>
 #include <QMenu>
+#include <QCloseEvent>
+#include <QHideEvent>
+#include <QShowEvent>
 
 #include "ui_mainwindow.h"
 

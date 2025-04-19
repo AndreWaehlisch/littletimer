@@ -1,3 +1,6 @@
+#include <QApplication>
+#include <QStringList>
+
 #include "mainwindow.h"
 
 // from https://forum.qt.io/topic/133694/using-alwaysactivatewindow-to-gain-foreground-in-win10-using-qt6-2
@@ -8,7 +11,9 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv); // create the QApplication (there can only be a single one)
+    const QApplication app(argc, argv); // create the QApplication (there can only be a single one)
+    app.setOrganizationName("AndreWaehlisch");
+    app.setApplicationName("LittleTimer");
     app.setQuitOnLastWindowClosed(false);  // if all windows (timers) are hidden because they are minimized to tray and then one timer is closed, then the app would close without this
 
 #ifdef LITTLETIMER_DO_WIN_BRINGTOFRONT
