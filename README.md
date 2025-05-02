@@ -6,7 +6,7 @@ To build and run use:
 ```
 mkdir build
 cd build
-qmake ../src/LittleTimer.pro
+qmake ../src/littleTimer.pro
 make
-./LittleTimer
+./littleTimer
 ```
