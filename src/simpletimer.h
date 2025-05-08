@@ -31,7 +31,7 @@ private:
     QLineEdit *theLineEdit;
     QComboBox *theComboBox;
     QProgressBar *theProgressBar;
-    QTimer myTimer; // when user requests 6min countdown, this timer deals with that
+    QTimer myTimer; // when user requests a countdown, this timer deals with that
     QTimer myProgressBarUpdateTimer; // this timer fires every second and updates the progress bar
 #ifdef LITTLETIMER_DO_WIN_TASKBAR_PROGRESSBAR
     QWinTaskbarButton wintasbarbutton;

@@ -76,7 +76,6 @@ void SimpleTimer::startStuff()
     theProgressBar->setEnabled(true);
 
 #ifdef LITTLETIMER_DO_WIN_TASKBAR_PROGRESSBAR
-
     // Init the qwintaskbarbutton. From the documentation:
     // QWidget::windowHandle() returns a valid instance of a QWindow only after the widget has been shown. It is therefore recommended to delay the initialization of the QWinTaskbarButton instances until QWidget::showEvent().
     if (wintasbarbutton.window() == Q_NULLPTR) {
@@ -167,7 +166,7 @@ void SimpleTimer::startStopTimer()
 
         // Check if user input is a time of day or period of time
         if (captures.length() == 3) {
-            const QTime timeInput = QTime(captures.at(1).toInt(), captures.at(2).toInt());
+            const QTime timeInput(captures.at(1).toInt(), captures.at(2).toInt());
 
             if (!timeInput.isValid()) {
                 QMessageBox::warning(thePushButton->parentWidget(), tr("Attention"), tr("Invalid input time (format: HH:MM)."));
@@ -188,7 +187,7 @@ void SimpleTimer::startStopTimer()
             const double input = inputString.toDouble(&conversionOkay); // try to convert user input QString to double
 
             // Test if conversion was okay (see http://doc.qt.io/qt-5/qstring.html#toDouble) [note: if not ok, then input=0]. QTimer uses int (msec), so make sure we are in the limit of that, also check for negative numbers.
-            if (!conversionOkay || input * factor > std::numeric_limits<int>::max() || input <= 0.) {
+            if (!conversionOkay || static_cast<double>(input * factor) > std::numeric_limits<int>::max() || input <= 0) {
                 QMessageBox::warning(thePushButton->parentWidget(), tr("Attention"), tr("Invalid input! Must be a positive number, which can't be too big (max 596h)."));
                 return;
             }
