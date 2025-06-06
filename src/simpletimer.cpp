@@ -1,5 +1,5 @@
 #include <limits> // std::numeric_limits
-#include <cmath> // ceil, nearbyint
+#include <cmath> // ceil, lround
 
 #include "simpletimer.h"
 #include "mainwindow.h"
@@ -37,12 +37,14 @@ void SimpleTimer::updateProgressBar() const
 {
     // progress bar value
     const double percent = 100.0 * myTimer.remainingTime() / myTimer.interval();
-    const int value = static_cast<int>(nearbyint(percent));
+    const int value = static_cast<int>(lround(percent));
     theProgressBar->setValue(value);
 
 #ifdef LITTLETIMER_DO_WIN_TASKBAR_PROGRESSBAR
     wintaskprogress->setValue(value);
 #endif /* LITTLETIMER_DO_WIN_TASKBAR_PROGRESSBAR */
+
+    QString myFactorString;
 
     // label text
     if (myTimer.remainingTime() > 60000) { // >1min
@@ -121,27 +123,21 @@ void SimpleTimer::timerFired() const
     msg.exec();
 }
 
-unsigned long SimpleTimer::getConversionFactor(const int currentIndex)
+const unsigned long SimpleTimer::getConversionFactor(const int currentIndex)
 {
-    unsigned long factor = 0; // factor to convert input value to ms
-
-    // Check which conversion factor user has selected
+    // Check which ms-conversion factor user has selected
     switch (static_cast<conversion_factor>(currentIndex)) {
 	case conversion_factor::ms:
-        factor = 1;
-        break;
+        return 1;
 	case conversion_factor::sec:
-        factor = 1000;
-        break;
+        return 1000;
 	case conversion_factor::min:
-        factor = 1000 * 60;
-        break;
+        return 1000 * 60;
 	case conversion_factor::h:
-        factor = 1000 * 60 * 60;
-        break;
+        return 1000 * 60 * 60;
+    default:
+        return 0;
     }
-
-    return factor;
 }
 
 void SimpleTimer::startStopTimer()
