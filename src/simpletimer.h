@@ -24,7 +24,6 @@ class SimpleTimer : public QObject
     Q_OBJECT
 
 private:
-    mutable QString myRemainingTimeString; // remaining time string for progressbar label ("6" in "6min")
     MainWindow *theMainWindow;
     QPushButton *thePushButton;
     QLineEdit *theLineEdit;
@@ -37,7 +36,8 @@ private:
     QWinTaskbarProgress *wintaskprogress;
 #endif /* LITTLETIMER_DO_WIN_TASKBAR_PROGRESSBAR */
     void startStuff(); // does stuff when timer is started (e.g. disable button)
-    unsigned long getConversionFactor(const int currentIndex);
+    static const unsigned long getConversionFactor(const int);
+    static const QString convert2progressstring(const int);
 
 public:
     bool running; // if the timer is currently running

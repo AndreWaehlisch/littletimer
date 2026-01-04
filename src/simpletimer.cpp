@@ -12,6 +12,27 @@
     #include <QWinTaskbarProgress>
 #endif /* LITTLETIMER_DO_WIN_TASKBAR_PROGRESSBAR */
 
+const QString SimpleTimer::convert2progressstring(const int theTime)
+{
+    // generate label text for progressbar
+    QString myRemainingTimeString, myFactorString;
+
+    if (theTime > 60000) { // >1min
+        myFactorString = "min";
+
+        if (theTime > 60000 * 5) { // >5min
+            myRemainingTimeString.setNum(ceil(theTime / 60000.), 'f', 0); // for "big minutes" we just use the minute (always round up to full minutes)
+        } else { // <=5min and >1min
+            myRemainingTimeString.setNum(theTime / 60000., 'f', 1); // for "small minutes" we use one number after the decimal delimiter (rounds to next 0.1 minute). "showpoint" forces the decimal point.
+        }
+    } else {
+        myFactorString = "sec";
+        myRemainingTimeString.setNum(theTime / 1000., 'f', 0); // round to full seconds
+    }
+
+    return myRemainingTimeString + myFactorString;
+}
+
 SimpleTimer::SimpleTimer(const Ui::MainWindow * const ui, MainWindow * const mainwindow) : myTimer(this), myProgressBarUpdateTimer(this)
 {
     running = false;
@@ -44,27 +65,13 @@ void SimpleTimer::updateProgressBar() const
     wintaskprogress->setValue(value);
 #endif /* LITTLETIMER_DO_WIN_TASKBAR_PROGRESSBAR */
 
-    QString myFactorString;
+    const QString progressString = convert2progressstring(myTimer.remainingTime());
 
-    // label text
-    if (myTimer.remainingTime() > 60000) { // >1min
-        myFactorString = "min";
-
-        if (myTimer.remainingTime() > 60000 * 5) { // >5min
-            myRemainingTimeString.setNum(ceil(myTimer.remainingTime() / 60000.), 'f', 0); // for "big minutes" we just use the minute (always round up to full minutes)
-        } else { // <=5min and >1min
-            myRemainingTimeString.setNum(myTimer.remainingTime() / 60000., 'f', 1); // for "small minutes" we use one number after the decimal delimiter (rounds to next 0.1 minute). "showpoint" forces the decimal point.
-        }
-    } else {
-        myFactorString = "sec";
-        myRemainingTimeString.setNum(myTimer.remainingTime() / 1000., 'f', 0); // round to full seconds
-    }
-
-    theProgressBar->setFormat(myRemainingTimeString + myFactorString);
+    theProgressBar->setFormat(progressString);
 
     // update tray icon tooltip
     if (theMainWindow->myTray->isVisible()) {
-        theMainWindow->myTray->setToolTip(theMainWindow->windowTitle() + ": " + myRemainingTimeString + myFactorString);
+        theMainWindow->myTray->setToolTip(theMainWindow->windowTitle() + ": " + progressString);
     }
 }
 
@@ -107,9 +114,8 @@ void SimpleTimer::stopStuff()
     thePushButton->setText(tr("Start"));
     theLineEdit->setDisabled(false);
     theComboBox->setDisabled(false);
+    theProgressBar->setFormat(convert2progressstring(myTimer.interval())); // set the last used timer interval as visual reference for the user
     theProgressBar->setEnabled(false);
-    theProgressBar->setValue(0);
-    theProgressBar->setFormat("");
 }
 
 void SimpleTimer::timerFired() const
@@ -123,7 +129,7 @@ void SimpleTimer::timerFired() const
     msg.exec();
 }
 
-unsigned long SimpleTimer::getConversionFactor(const int currentIndex)
+const unsigned long SimpleTimer::getConversionFactor(const int currentIndex)
 {
     // Check which ms-conversion factor user has selected
     switch (static_cast<conversion_factor>(currentIndex)) {
