@@ -129,7 +129,7 @@ void SimpleTimer::timerFired() const
     msg.exec();
 }
 
-const unsigned long SimpleTimer::getConversionFactor(const int currentIndex)
+unsigned long SimpleTimer::getConversionFactor(const int currentIndex)
 {
     // Check which ms-conversion factor user has selected
     switch (static_cast<conversion_factor>(currentIndex)) {

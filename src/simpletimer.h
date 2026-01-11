@@ -36,7 +36,7 @@ private:
     QWinTaskbarProgress *wintaskprogress;
 #endif /* LITTLETIMER_DO_WIN_TASKBAR_PROGRESSBAR */
     void startStuff(); // does stuff when timer is started (e.g. disable button)
-    static const unsigned long getConversionFactor(const int);
+    static unsigned long getConversionFactor(const int);
     static const QString convert2progressstring(const int);
 
 public:
